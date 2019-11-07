@@ -20,7 +20,7 @@ let masterTemplate gitRepoName navBar titletext bodyText =
                 CrossOrigin "anonymous"
             ]
             link [
-                Href "/content/style.css"
+                Href (sprintf "/%s/content/style.css" gitRepoName)
                 Type "text/css"
                 Rel "stylesheet"
             ]
@@ -44,9 +44,9 @@ let masterTemplate gitRepoName navBar titletext bodyText =
                 Integrity "sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
                 CrossOrigin "anonymous"
                 ] []
-            yield script [Src "/content/tips.js" ] []
-            yield script [Src "/content/hotload.js" ] []
-            yield script [Src "/content/submenu.js" ] []
+            yield script [Src (sprintf "/%s/content/tips.js" gitRepoName) ] []
+            yield script [Src (sprintf "/%s/content/hotload.js" gitRepoName) ] []
+            yield script [Src (sprintf "/%s/content/submenu.js" gitRepoName) ] []
         ]
         // footer [ Class "footer font-small bg-dark navbar fixed-bottom" ] [
         //     div [Class "container"] [
