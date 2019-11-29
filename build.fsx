@@ -81,7 +81,7 @@ let releaseNotes = Fake.Core.ReleaseNotes.load "RELEASE_NOTES.md"
 
 let publishUrl = "https://www.nuget.org"
 
-let siteBaseUrl = "https://www.jimmybyrd.me/miniscaffold-docs-test/"
+let docsSiteBaseUrl = "https://www.jimmybyrd.me/miniscaffold-docs-test/"
 
 let disableCodeCoverage = environVarAsBoolOrDefault "DISABLE_COVERAGE" false
 
@@ -151,7 +151,7 @@ module DocsTool =
     let buildparser = ArgumentParser.Create<BuildArgs>(programName = "docstool")
     let buildCLI =
         [
-            BuildArgs.SiteBaseUrl siteBaseUrl
+            BuildArgs.SiteBaseUrl docsSiteBaseUrl
             BuildArgs.ProjectGlob srcGlob
             BuildArgs.DocsOutputDirectory docsDir
             BuildArgs.DocsSourceDirectory docsSrcDir

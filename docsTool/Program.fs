@@ -24,6 +24,12 @@ type DisposableList =
             member x.Dispose () =
                 x.disposables |> List.iter(fun s -> s.Dispose())
 
+let debugger () =
+    if not(System.Diagnostics.Debugger.IsAttached) then
+      printfn "Please attach a debugger, PID: %d" (System.Diagnostics.Process.GetCurrentProcess().Id)
+    while not(System.Diagnostics.Debugger.IsAttached) do
+      System.Threading.Thread.Sleep(100)
+    System.Diagnostics.Debugger.Break()
 
 module ProjInfo =
     open System.IO
@@ -187,6 +193,7 @@ module GenerateDocs =
                         fsiEvaluator = fsiEvaluator
                     )
                 | others -> failwithf "FSharp.Literal does not support %s file extensions" others
+            printfn "DefinedLinks : %A" doc
             FSharp.Literate.Literate.FormatLiterateNodes(doc, OutputKind.Html, "", true, true)
 
         let format (doc: LiterateDocument) =
