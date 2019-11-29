@@ -19,7 +19,7 @@ I created it because I had to solve an issue with this other thing.
       <div class="card-body">
         <h5 class="card-title">Tutorials</h5>
         <p class="card-text">Takes you by the hand through a series of steps to create your first thing. </p>
-        <a href="/Tutorials/Getting_Started.html" class="btn btn-primary">Get started</a>
+        <a href="{{siteBaseUrl}}/Tutorials/Getting_Started.html" class="btn btn-primary">Get started</a>
       </div>
     </div>
   </div>
