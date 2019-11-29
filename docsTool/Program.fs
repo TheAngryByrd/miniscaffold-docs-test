@@ -148,7 +148,7 @@ module GenerateDocs =
             DocsRoot = IO.DirectoryInfo docsDir
             DocsPages = pages
         }
-        Nav.generateNav cfg.GitHubRepoName topLevelNavs
+        Nav.generateNav cfg.SiteBaseUrl cfg.GitHubRepoName topLevelNavs
 
     let renderGeneratedDocs (cfg : Configuration)  (generatedDocs : GeneratedDoc list) =
         let nav = generateNav cfg generatedDocs
