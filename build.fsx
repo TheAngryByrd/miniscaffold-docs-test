@@ -73,8 +73,9 @@ let docsDir = __SOURCE_DIRECTORY__  @@ "docs"
 let docsSrcDir = __SOURCE_DIRECTORY__  @@ "docsSrc"
 let docsToolDir = __SOURCE_DIRECTORY__ @@ "docsTool"
 
-let gitOwner = "MyGithubUsername"
+let gitOwner = "TheAngryByrd"
 let gitRepoName = "miniscaffold-docs-test"
+let gitHubRepoUrl = sprintf "https://github.com/%s/%s" gitOwner gitRepoName
 
 let releaseBranch = "master"
 let releaseNotes = Fake.Core.ReleaseNotes.load "RELEASE_NOTES.md"
@@ -155,7 +156,8 @@ module DocsTool =
             BuildArgs.ProjectGlob srcGlob
             BuildArgs.DocsOutputDirectory docsDir
             BuildArgs.DocsSourceDirectory docsSrcDir
-            BuildArgs.GitHubRepoName gitRepoName
+            BuildArgs.GitHubRepoUrl gitHubRepoUrl
+            BuildArgs.ProjectName gitRepoName
 
         ]
         |> buildparser.PrintCommandLineArgumentsFlat
@@ -172,7 +174,8 @@ module DocsTool =
             WatchArgs.ProjectGlob srcGlob
             WatchArgs.DocsOutputDirectory docsDir
             WatchArgs.DocsSourceDirectory docsSrcDir
-            WatchArgs.GitHubRepoName gitRepoName
+            WatchArgs.GitHubRepoUrl gitHubRepoUrl
+            WatchArgs.ProjectName gitRepoName
         ]
         |> watchparser.PrintCommandLineArgumentsFlat
 

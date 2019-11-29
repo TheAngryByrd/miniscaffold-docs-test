@@ -8,8 +8,8 @@
 
 macOS/Linux | Windows
 --- | ---
-[![Travis Badge](https://travis-ci.org/MyGithubUsername/miniscaffold-docs-test.svg?branch=master)](https://travis-ci.org/MyGithubUsername/miniscaffold-docs-test) | [![Build status](https://ci.appveyor.com/api/projects/status/github/MyGithubUsername/miniscaffold-docs-test?svg=true)](https://ci.appveyor.com/project/MyGithubUsername/miniscaffold-docs-test)
-[![Build History](https://buildstats.info/travisci/chart/MyGithubUsername/miniscaffold-docs-test)](https://travis-ci.org/MyGithubUsername/miniscaffold-docs-test/builds) | [![Build History](https://buildstats.info/appveyor/chart/MyGithubUsername/miniscaffold-docs-test)](https://ci.appveyor.com/project/MyGithubUsername/miniscaffold-docs-test)  
+[![Travis Badge](https://travis-ci.org/TheAngryByrd/miniscaffold-docs-test.svg?branch=master)](https://travis-ci.org/TheAngryByrd/miniscaffold-docs-test) | [![Build status](https://ci.appveyor.com/api/projects/status/github/TheAngryByrd/miniscaffold-docs-test?svg=true)](https://ci.appveyor.com/project/TheAngryByrd/miniscaffold-docs-test)
+[![Build History](https://buildstats.info/travisci/chart/TheAngryByrd/miniscaffold-docs-test)](https://travis-ci.org/TheAngryByrd/miniscaffold-docs-test/builds) | [![Build History](https://buildstats.info/appveyor/chart/TheAngryByrd/miniscaffold-docs-test)](https://ci.appveyor.com/project/TheAngryByrd/miniscaffold-docs-test)  
 
 ## NuGet 
 
