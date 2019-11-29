@@ -24,12 +24,6 @@ type DisposableList =
             member x.Dispose () =
                 x.disposables |> List.iter(fun s -> s.Dispose())
 
-let debugger () =
-    if not(System.Diagnostics.Debugger.IsAttached) then
-      printfn "Please attach a debugger, PID: %d" (System.Diagnostics.Process.GetCurrentProcess().Id)
-    while not(System.Diagnostics.Debugger.IsAttached) do
-      System.Threading.Thread.Sleep(100)
-    System.Diagnostics.Debugger.Break()
 
 module ProjInfo =
     open System.IO
@@ -90,9 +84,6 @@ module ProjInfo =
 
         | None ->
             failwithf "Couldn't read project %s" projPath
-
-
-
 
 
 module GenerateDocs =
@@ -163,6 +154,7 @@ module GenerateDocs =
         Shell.copyDir (cfg.DocsOutputDirectory.FullName </> "content")   ( cfg.DocsSourceDirectory.FullName </> "content") (fun _ -> true)
         Shell.copyDir (cfg.DocsOutputDirectory.FullName </> "files")   ( cfg.DocsSourceDirectory.FullName </> "files") (fun _ -> true)
 
+
     let regexReplace (cfg : Configuration) source =
         let replacements =
             [
@@ -204,7 +196,6 @@ module GenerateDocs =
                         fsiEvaluator = fsiEvaluator
                     )
                 | others -> failwithf "FSharp.Literal does not support %s file extensions" others
-            printfn "DefinedLinks : %A" doc
             FSharp.Literate.Literate.FormatLiterateNodes(doc, OutputKind.Html, "", true, true)
 
         let format (doc: LiterateDocument) =
@@ -376,8 +367,10 @@ module WebServer =
     open Microsoft.AspNetCore.Http
     open System.Net.WebSockets
     open System.Diagnostics
+
     let hostname = "localhost"
     let port = 5000
+
     /// Helper to determine if port is in use
     let waitForPortInUse (hostname : string) port =
         let mutable portInUse = false
@@ -445,7 +438,8 @@ module WebServer =
         if proc.ExitCode <> 0 then failwithf "opening browser failed"
 
     let serveDocs docsDir =
-
+        let hostname = "localhost"
+        let port = 5000
         async {
             waitForPortInUse hostname port
             sprintf "http://%s:%d/index.html" hostname port |> openBrowser
@@ -456,13 +450,6 @@ module WebServer =
 open Argu
 open Fake.IO.Globbing.Operators
 open DocsTool.CLIArgs
-
-module Uri =
-    let create (url : string) =
-        match Uri.TryCreate(url, UriKind.Absolute) with
-        | (true, v) -> v
-        | _ -> failwithf "Bad url %s" url
-
 [<EntryPoint>]
 let main argv =
 

@@ -29,7 +29,7 @@ module CLIArgs =
             member this.Usage =
                 match this with
                 | SiteBaseUrl _ -> "The public site's base url."
-                | ProjectGlob _  -> "The glob for the dlls to generate API documentation."
+                | ProjectGlob _  -> "The glob for the dlls to generate API documentation"
                 | DocsOutputDirectory _ -> "The docs output directory."
                 | DocsSourceDirectory _ -> "The docs source directory."
                 | GitHubRepoName _ -> "The GitHub repository name."

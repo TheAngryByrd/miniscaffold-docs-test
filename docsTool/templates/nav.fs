@@ -1,8 +1,7 @@
 module Nav
 
-open DocsTool
 open System
-
+open DocsTool
 open Fable.React
 open Fable.React.Props
 
@@ -139,7 +138,7 @@ let generateNav siteBaseUrl (gitRepoName : string) (topLevelNav : TopLevelNav) =
         i [ Class "fa fa-car"] []
         a [
             Class "navbar-brand"
-            Href "/index.html"
+            Href (siteBaseUrl |> Uri.simpleCombine "/index.html")
         ] [str (gitRepoName)]
         button [
             Class "navbar-toggler"

@@ -1,8 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.2</TargetFramework>
   </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="Prelude.fs" />
     <Compile Include="templates/helpers.fs" />
@@ -16,6 +18,8 @@
     <Compile Include="CLI.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
+
   <Import Project="..\netfx.props" />
   <Import Project="..\.paket\Paket.Restore.targets" />
+
 </Project>
