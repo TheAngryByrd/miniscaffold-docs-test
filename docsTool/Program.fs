@@ -60,13 +60,15 @@ module ProjInfo =
 
     let [<Literal>] RefPrefix = "-r:"
 
-    let findReferences projPath : ProjInfo=
+    let findReferences projPath : ProjInfo =
         let fcs = createFCS ()
+
         let loader, netFwInfo = createLoader ()
         loader.LoadProjects [ projPath ]
         let fcsBinder = FCSBinder(netFwInfo, loader, fcs)
         match fcsBinder.GetProjectOptions(projPath) with
         | Some options ->
+            printfn "%A" options
             let references =
                 options.OtherOptions
                 |> Array.filter(fun s ->
@@ -83,7 +85,19 @@ module ProjInfo =
                 | Some (:? ProjectOptions as dpwPo) -> dpwPo
                 | x -> failwithf "invalid project info %A" x
             let targetPath =
+                let path = dpwPo.ExtraProjectInfo.TargetPath
+
+                if File.exists path then
                     dpwPo.ExtraProjectInfo.TargetPath |> FileInfo
+                else
+                    //HACK: Need to get dotnet-proj-info to handle configurations when extracting data
+                    let releasePath =path.Replace("/Debug/", "/Release/")
+                    if releasePath |> File.exists then
+                        releasePath |> FileInfo
+                    else
+                    failwithf "Couldn't find a dll to generate documentationfrom %s or %s" path releasePath
+
+
             { References = references ; TargetPath = targetPath}
 
         | None ->

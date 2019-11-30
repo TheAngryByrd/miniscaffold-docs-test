@@ -166,7 +166,7 @@ module DocsTool =
     let build () =
         dotnet.run (fun args ->
             { args with WorkingDirectory = docsToolDir }
-        ) (sprintf " -- build %s" (buildCLI))
+        ) (sprintf "-c Release -- build %s" (buildCLI))
         |> failOnBadExitAndPrint
 
     let watchparser = ArgumentParser.Create<WatchArgs>(programName = "docstool")
@@ -486,8 +486,17 @@ Target.create "ReleaseDocs" releaseDocs
 "DotnetBuild"
 ==> "BuildDocs"
 
+"DotnetPack"
+?=> "BuildDocs"
+
+"BuildDocs"
+?=> "PublishToNuget"
+
 "BuildDocs"
 ==> "ReleaseDocs"
+
+"GenerateCoverageReport"
+?=> "ReleaseDocs"
 
 "ReleaseDocs"
 ==> "GitRelease"
@@ -500,7 +509,7 @@ Target.create "ReleaseDocs" releaseDocs
     ==> "DotnetTest"
     =?> ("GenerateCoverageReport", not disableCodeCoverage)
     ==> "DotnetPack"
-    ==> "SourceLinkTest"
+    // ==> "SourceLinkTest"
     ==> "PublishToNuGet"
     ==> "GitRelease"
     ==> "GitHubRelease"
