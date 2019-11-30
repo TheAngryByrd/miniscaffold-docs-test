@@ -435,9 +435,15 @@ let watchDocs _ =
     watchBuild ()
     DocsTool.watch ()
 
-let releaseDocs _ =
-    Git.Staging.stageAll ""
+let releaseDocs ctx =
+    isReleaseBranchCheck ()
+
+    Git.Staging.stageAll docsDir
     Git.Commit.exec "" (sprintf "Documentation release of version %s" releaseNotes.NugetVersion)
+    if isRelease (ctx.Context.AllExecutingTargets) |> not then
+        // We only want to push if we're only calling "ReleaseDocs" target
+        // If we're calling "Release" target, we'll let the "GitRelease" target do the git push
+        Git.Branches.push ""
 
 //-----------------------------------------------------------------------------
 // Target Declaration
@@ -482,6 +488,9 @@ Target.create "ReleaseDocs" releaseDocs
 
 "BuildDocs"
 ==> "ReleaseDocs"
+
+"ReleaseDocs"
+==> "GitRelease"
 
 "DotnetBuild"
 ==> "WatchDocs"
