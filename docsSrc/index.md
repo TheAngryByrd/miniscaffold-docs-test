@@ -45,7 +45,7 @@ I created it because I had to solve an issue with this other thing.
       <div class="card-body">
         <h5 class="card-title">Api Reference</h5>
         <p class="card-text">Contain technical reference for APIs.</p>
-        <a href="{{siteBaseUrl}}/Api_Reference/MyLib.1/MyLib.1.html" class="btn btn-primary">Read Api Docs</a>
+        <a href="{{siteBaseUrl}}/Api_Reference/miniscaffold-docs-test/miniscaffold-docs-test.html" class="btn btn-primary">Read Api Docs</a>
       </div>
     </div>
   </div>
