@@ -377,7 +377,7 @@ let gitRelease _ =
     isReleaseBranchCheck ()
 
     let releaseNotesGitCommitFormat = releaseNotes.Notes |> Seq.map(sprintf "* %s\n") |> String.concat ""
-
+    // Git.Staging.
     Git.Staging.stageAll ""
     Git.Commit.exec "" (sprintf "Bump version to %s \n%s" releaseNotes.NugetVersion releaseNotesGitCommitFormat)
     Git.Branches.push ""
@@ -417,6 +417,28 @@ let formatCode _ =
         | _ -> ()
     )
 
+let buildDocs _ =
+    DocsTool.build ()
+
+let watchDocs _ =
+    let watchBuild () =
+        !! srcGlob
+        |> Seq.map(fun proj -> fun () ->
+            dotnet.watch
+                (fun opt ->
+                    opt |> DotNet.Options.withWorkingDirectory (IO.Path.GetDirectoryName proj))
+                "build"
+                ""
+            |> ignore
+        )
+        |> Seq.iter (invokeAsync >> Async.Catch >> Async.Ignore >> Async.Start)
+    watchBuild ()
+    DocsTool.watch ()
+
+let releaseDocs _ =
+    Git.Staging.stageAll ""
+    Git.Commit.exec "" (sprintf "Documentation release of version %s" releaseNotes.NugetVersion)
+
 //-----------------------------------------------------------------------------
 // Target Declaration
 //-----------------------------------------------------------------------------
@@ -435,25 +457,9 @@ Target.create "GitRelease" gitRelease
 Target.create "GitHubRelease" githubRelease
 Target.create "FormatCode" formatCode
 Target.create "Release" ignore
-
-Target.create "BuildDocs" <| fun _ ->
-    DocsTool.build ()
-
-let watchBuild () =
-    !! srcGlob
-    |> Seq.map(fun proj -> fun () ->
-        dotnet.watch
-            (fun opt ->
-                opt |> DotNet.Options.withWorkingDirectory (IO.Path.GetDirectoryName proj))
-            "build"
-            ""
-        |> ignore
-    )
-    |> Seq.iter (invokeAsync >> Async.Catch >> Async.Ignore >> Async.Start)
-
-Target.create "WatchDocs" <| fun _ ->
-    watchBuild ()
-    DocsTool.watch ()
+Target.create "BuildDocs" buildDocs
+Target.create "WatchDocs" watchDocs
+Target.create "ReleaseDocs" releaseDocs
 
 //-----------------------------------------------------------------------------
 // Target Dependencies
@@ -473,6 +479,9 @@ Target.create "WatchDocs" <| fun _ ->
 
 "DotnetBuild"
 ==> "BuildDocs"
+
+"BuildDocs"
+==> "ReleaseDocs"
 
 "DotnetBuild"
 ==> "WatchDocs"
