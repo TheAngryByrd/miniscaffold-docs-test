@@ -158,6 +158,7 @@ module DocsTool =
             BuildArgs.DocsSourceDirectory docsSrcDir
             BuildArgs.GitHubRepoUrl gitHubRepoUrl
             BuildArgs.ProjectName gitRepoName
+            BuildArgs.ReleaseVersion releaseNotes.NugetVersion
 
         ]
         |> buildparser.PrintCommandLineArgumentsFlat
@@ -176,6 +177,7 @@ module DocsTool =
             WatchArgs.DocsSourceDirectory docsSrcDir
             WatchArgs.GitHubRepoUrl gitHubRepoUrl
             WatchArgs.ProjectName gitRepoName
+            WatchArgs.ReleaseVersion releaseNotes.NugetVersion
         ]
         |> watchparser.PrintCommandLineArgumentsFlat
 

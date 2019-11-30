@@ -103,7 +103,6 @@ let commentBlock (c: Comment) =
         | section, content -> Section (section, content)
 
     let renderSection (s : KeyValuePair<string,string>): Fable.React.ReactElement list =
-        printfn "section -> %A : %A" s.Key s.Value
         match s with
         | EmptyDefaultBlock -> []
         | NonEmptyDefaultBlock content -> [ div [ Class "comment-block" ] [ RawText (content.Replace("h2>", "h5>"))  ] ]
