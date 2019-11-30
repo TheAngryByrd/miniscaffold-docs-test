@@ -7,6 +7,6 @@ let foo = ()
 ## Here is the path to downloading 
 
     [lang=bash]
-    paket install miniscaffold-docs-test
+    paket install MyLib.1
 
 
