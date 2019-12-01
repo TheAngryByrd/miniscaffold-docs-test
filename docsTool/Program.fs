@@ -10,6 +10,7 @@ let refreshWebpageEvent = new Event<string>()
 type Configuration = {
     SiteBaseUrl         : Uri
     GitHubRepoUrl       : Uri
+    RepositoryRoot      : IO.DirectoryInfo
     DocsOutputDirectory : IO.DirectoryInfo
     DocsSourceDirectory : IO.DirectoryInfo
     ProjectName         : string
@@ -76,15 +77,13 @@ module ProjInfo =
             else
                 failwithf "Couldn't find a dll to generate documentationfrom %s or %s" targetPath releasePath
 
-    let findReferences projPath : ProjInfo =
+    let findReferences projPath : ProjInfo=
         let fcs = createFCS ()
-
         let loader, netFwInfo = createLoader ()
         loader.LoadProjects [ projPath ]
         let fcsBinder = FCSBinder(netFwInfo, loader, fcs)
         match fcsBinder.GetProjectOptions(projPath) with
         | Some options ->
-            printfn "%A" options
             let references =
                 options.OtherOptions
                 |> Array.filter(fun s ->
@@ -120,6 +119,7 @@ module GenerateDocs =
 
 
     type GeneratedDoc = {
+        SourcePath : FileInfo option
         OutputPath : FileInfo
         Content : ReactElement list
         Title : string
@@ -137,12 +137,12 @@ module GenerateDocs =
             html ]
         |> Fable.ReactServer.renderToString
 
-    let renderWithMasterTemplate masterCfg navBar titletext bodytext =
-        Master.masterTemplate masterCfg navBar titletext bodytext
+    let renderWithMasterTemplate masterCfg navBar titletext bodytext pageSource =
+        Master.masterTemplate masterCfg navBar titletext bodytext pageSource
         |> render
 
-    let renderWithMasterAndWrite masterCfg (outPath : FileInfo) navBar titletext bodytext   =
-        let contents = renderWithMasterTemplate masterCfg navBar titletext bodytext
+    let renderWithMasterAndWrite masterCfg (outPath : FileInfo) navBar titletext bodytext pageSource   =
+        let contents = renderWithMasterTemplate masterCfg navBar titletext bodytext pageSource
         IO.Directory.CreateDirectory(outPath.DirectoryName) |> ignore
 
         IO.File.WriteAllText(outPath.FullName, contents)
@@ -178,11 +178,16 @@ module GenerateDocs =
             GitHubRepoUrl = cfg.GitHubRepoUrl
             ProjectName = cfg.ProjectName
             ReleaseVersion = cfg.ReleaseVersion
-            ReleaseDate = DateTime.Now.ToString("yyyy/MM/dd")
+            ReleaseDate = DateTimeOffset.Now
         }
         generatedDocs
         |> Seq.iter(fun gd ->
-            renderWithMasterAndWrite masterCfg gd.OutputPath nav gd.Title gd.Content
+            let pageSource =
+                gd.SourcePath
+                |> Option.map(fun sp ->
+                    sp.FullName.Replace(cfg.RepositoryRoot.FullName, "").Replace("\\", "/")
+                )
+            renderWithMasterAndWrite masterCfg gd.OutputPath nav gd.Title gd.Content pageSource
         )
 
 
@@ -266,6 +271,7 @@ module GenerateDocs =
                 ]]
 
             {
+                SourcePath = FileInfo filePath |> Some
                 OutputPath = outPath
                 Content = contents
                 Title = sprintf "%s-%s" outPath.Name cfg.ProjectName
@@ -293,13 +299,14 @@ module GenerateDocs =
                 MetadataFormat.Generate(
                     projInfo.TargetPath.FullName,
                     libDirs = libDirs,
-                    sourceFolder = __SOURCE_DIRECTORY__ @@ "..",
+                    sourceFolder = cfg.RepositoryRoot.FullName,
                     sourceRepo = (cfg.GitHubRepoUrl |> Uri.simpleCombine "tree/master" |> string),
                     markDownComments = false
                     )
 
             let fi = FileInfo <| targetApiDir @@ (sprintf "%s.html" generatorOutput.AssemblyGroup.Name)
             let indexDoc = {
+                SourcePath = None
                 OutputPath = fi
                 Content = [Namespaces.generateNamespaceDocs generatorOutput.AssemblyGroup generatorOutput.Properties]
                 Title = sprintf "%s-%s" fi.Name cfg.ProjectName
@@ -311,6 +318,7 @@ module GenerateDocs =
                     let fi = FileInfo <| targetApiDir @@ (sprintf "%s.html" m.Module.UrlName)
                     let content = Modules.generateModuleDocs m generatorOutput.Properties
                     {
+                        SourcePath = None
                         OutputPath = fi
                         Content = content
                         Title = sprintf "%s-%s" m.Module.Name cfg.ProjectName
@@ -322,6 +330,7 @@ module GenerateDocs =
                     let fi = FileInfo <| targetApiDir @@ (sprintf "%s.html" m.Type.UrlName)
                     let content = Types.generateTypeDocs m generatorOutput.Properties
                     {
+                        SourcePath = None
                         OutputPath = fi
                         Content = content
                         Title = sprintf "%s-%s" m.Type.Name cfg.ProjectName
@@ -498,6 +507,7 @@ let main argv =
     let defaultConfig = {
         SiteBaseUrl = Uri(sprintf "http://%s:%d/" WebServer.hostname WebServer.port )
         GitHubRepoUrl = Uri "https://github.com"
+        RepositoryRoot = IO.DirectoryInfo (__SOURCE_DIRECTORY__ @@ "..")
         DocsOutputDirectory = IO.DirectoryInfo "docs"
         DocsSourceDirectory = IO.DirectoryInfo "docsSrc"
         ProjectName = ""

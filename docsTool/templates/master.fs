@@ -10,44 +10,44 @@ type MasterTemplateConfig = {
     GitHubRepoUrl : Uri
     ProjectName : string
     ReleaseVersion : string
-    ReleaseDate : string
+    ReleaseDate : DateTimeOffset
 }
 
-let renderFooter (cfg : MasterTemplateConfig) =
-    footer [Class "footer font-small m-0 pt-1 bg-dark"] [
+let renderFooter (cfg : MasterTemplateConfig) (pageSource : string option) =
+    footer [Class "footer font-small m-0 py-4 bg-dark"] [
         div [Class "container"] [
-            div [Class "row py-4"] [
-                div [Class "col"] [
+            div [Class "row"] [
+                div [Class "col-12 col-md-4 mb-4 mb-md-0"] [
                     div [Class "text-light"] [
-                        h5 [] [ str "Project Resources"]
+                        h2 [Class "h5"] [ str "Project Resources"]
                         ul [Class "list-group list-group-flush"] [
                             li [Class "list-group-item list-group-item-dark ml-0 pl-0"] [
                                 a [Href (cfg.GitHubRepoUrl |> Uri.simpleCombine "blob/master/README.md"); Class "text-white"] [
-                                    i [ Class "fab fa-readme pr-1"] []
+                                    i [ Class "fas fa-book-reader fa-fw mr-2"] []
                                     str "README"
                                 ]
                             ]
                             li [Class "list-group-item list-group-item-dark ml-0 pl-0"] [
                                 a [Href (cfg.GitHubRepoUrl |> Uri.simpleCombine "blob/master/RELEASE_NOTES.md"); Class "text-white"] [
-                                    i [ Class "far fa-sticky-note pr-1"] []
+                                    i [ Class "fas fa-sticky-note fa-fw mr-2"] []
                                     str "Release Notes / Changelog"
                                 ]
                             ]
                             li [Class "list-group-item list-group-item-dark ml-0 pl-0"] [
                                 a [Href (cfg.GitHubRepoUrl |> Uri.simpleCombine "blob/master/LICENSE.md"); Class "text-white"] [
-                                    i [ Class "far fa-id-card pr-1"] []
+                                    i [ Class "fas fa-id-card fa-fw mr-2"] []
                                     str "License"
                                 ]
                             ]
                             li [Class "list-group-item list-group-item-dark ml-0 pl-0"] [
-                                a [Href (cfg.GitHubRepoUrl |> Uri.simpleCombine "blob/master/CONTRIBUTING.md") ; Class "text-white"] [
-                                    i [ Class "fas fa-directions pr-1"] []
+                                a [Href (cfg.GitHubRepoUrl |> Uri.simpleCombine "blob/master/CONTRIBUTING.md"); Class "text-white"] [
+                                    i [ Class "fas fa-directions fa-fw mr-2"] []
                                     str "Contributing"
                                 ]
                             ]
                             li [Class "list-group-item list-group-item-dark ml-0 pl-0"] [
-                                a [Href (cfg.GitHubRepoUrl |> Uri.simpleCombine "blob/master/CODE_OF_CONDUCT.md") ; Class "text-white"] [
-                                    i [ Class "fas fa-users pr-1"] []
+                                a [Href (cfg.GitHubRepoUrl |> Uri.simpleCombine "blob/master/CODE_OF_CONDUCT.md"); Class "text-white"] [
+                                    i [ Class "fas fa-users fa-fw mr-2"] []
                                     str "Code of Conduct"
                                 ]
                             ]
@@ -56,25 +56,25 @@ let renderFooter (cfg : MasterTemplateConfig) =
 
                     ]
                 ]
-                div [Class "col"] [
+                div [Class "col-12 col-md-4 mb-4 mb-md-0"] [
                     div [Class "text-light"] [
-                        h5 [] [ str "Other links"]
+                        h2 [Class "h5"] [ str "Other Links"]
                         ul [Class "list-group list-group-flush"] [
                             li [Class "list-group-item list-group-item-dark ml-0 pl-0"] [
                                 a [Href "https://docs.microsoft.com/en-us/dotnet/fsharp/"; Class "text-white"] [
-                                    i [Class "fab fa-microsoft pr-1"] []
+                                    i [Class "fab fa-microsoft fa-fw mr-2"] []
                                     str "F# Documentation"
                                 ]
                             ]
                             li [Class "list-group-item list-group-item-dark ml-0 pl-0"] [
                                 a [Href "https://fsharp.slack.com/"; Class "text-white"] [
-                                    i [Class "fab fa-slack pr-1"] []
+                                    i [Class "fab fa-slack fa-fw mr-2"] []
                                     str "F# Slack"
                                 ]
                             ]
                             li [Class "list-group-item list-group-item-dark ml-0 pl-0"] [
                                 a [Href "http://foundation.fsharp.org/"; Class "text-white"] [
-                                    img [Class "fsharp-footer-logo pr-1"; Src "https://fsharp.org/img/logo/fsharp.svg"]
+                                    img [Class "fsharp-footer-logo mr-2"; Src "https://fsharp.org/img/logo/fsharp.svg"; Alt "FSharp Logo"]
                                     str "F# Software Foundation"
                                 ]
                             ]
@@ -83,22 +83,34 @@ let renderFooter (cfg : MasterTemplateConfig) =
 
 
                 ]
-                div [Class "col"] [
+                div [Class "col-12 col-md-4"] [
                     div [Class "text-light"] [
-                        h5 [] [str "Metadata"]
-                        //https://github.com/TheAngryByrd/MiniScaffold/releases/tag/0.20.1
-                        p [] [
-                            str "Generated for version "
-                            a [Class "text-white"; Href (cfg.GitHubRepoUrl |> Uri.simpleCombine (sprintf "releases/tag/%s" cfg.ReleaseVersion))] [str cfg.ReleaseVersion]
-                            str (sprintf " on %s" cfg.ReleaseDate)
+                        h2 [Class "h5"] [str "Metadata"]
+                        ul [Class "list-group list-group-flush"] [
+                            li [Class "list-group-item list-group-item-dark ml-0 pl-0"] [
+                                str "Generated for version "
+                                a [Class "text-white"; Href (cfg.GitHubRepoUrl |> Uri.simpleCombine (sprintf "releases/tag/%s" cfg.ReleaseVersion))] [str cfg.ReleaseVersion]
+                                str (sprintf " on %s" (cfg.ReleaseDate.ToString("yyyy/MM/dd")))
+                            ]
+                            match pageSource with
+                            | Some p ->
+                                let page = cfg.GitHubRepoUrl |> Uri.simpleCombine "tree/master" |> Uri |> Uri.simpleCombine p
+                                li [Class "list-group-item list-group-item-dark ml-0 pl-0"] [
+                                    str "Found an issue? "
+                                    a [Class "text-white"; Href (page |> string)] [
+                                        str "Edit this page."
+                                    ]
+                                ]
+                            | None ->
+                                ()
                         ]
                     ]
                 ]
             ]
-            div [Class "row py-4"] [
-                div [Class "col"] [
-                    div [Class "text-light text-center"] [
-                        i [Class "fas fa-copyright pr-1"] []
+            div [Class "row"] [
+                div [Class "col text-center"] [
+                    small [Class "text-light"] [
+                        i [Class "fas fa-copyright mr-1"] []
                         str "MyLib.1, All rights reserved"
                     ]
                 ]
@@ -106,7 +118,7 @@ let renderFooter (cfg : MasterTemplateConfig) =
         ]
     ]
 
-let masterTemplate (cfg : MasterTemplateConfig) navBar titletext bodyText =
+let masterTemplate (cfg : MasterTemplateConfig) navBar titletext bodyText pageSource =
     html [Lang "en"] [
         head [] [
             title [] [ str (sprintf "%s docs / %s" cfg.ProjectName titletext) ]
@@ -123,7 +135,7 @@ let masterTemplate (cfg : MasterTemplateConfig) navBar titletext bodyText =
                 CrossOrigin "anonymous"
             ]
             link [
-                Href (cfg.SiteBaseUrl |> Uri.simpleCombine "/content/style.css" )
+                Href (cfg.SiteBaseUrl |> Uri.simpleCombine (sprintf "/content/style.css?version=%i" cfg.ReleaseDate.Ticks) )
                 Type "text/css"
                 Rel "stylesheet"
             ]
@@ -133,7 +145,7 @@ let masterTemplate (cfg : MasterTemplateConfig) navBar titletext bodyText =
             yield navBar
             yield div [Class "wrapper d-flex flex-column justify-content-between min-vh-100"] [
                 main [Class "container main mb-4"] bodyText
-                renderFooter cfg
+                renderFooter cfg pageSource
             ]
             yield script [
                 Src "https://code.jquery.com/jquery-3.4.1.slim.min.js"
@@ -150,8 +162,8 @@ let masterTemplate (cfg : MasterTemplateConfig) navBar titletext bodyText =
                 Integrity "sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
                 CrossOrigin "anonymous"
                 ] []
-            yield script [Src (cfg.SiteBaseUrl |> Uri.simpleCombine "/content/tips.js") ] []
-            yield script [Src (cfg.SiteBaseUrl |> Uri.simpleCombine "/content/hotload.js") ] []
-            yield script [Src (cfg.SiteBaseUrl |> Uri.simpleCombine "/content/submenu.js") ] []
+            yield script [Src (cfg.SiteBaseUrl |> Uri.simpleCombine (sprintf "/content/tips.js?version=%i" cfg.ReleaseDate.Ticks)) ] []
+            yield script [Src (cfg.SiteBaseUrl |> Uri.simpleCombine (sprintf "/content/hotload.js?version=%i" cfg.ReleaseDate.Ticks)) ] []
+            yield script [Src (cfg.SiteBaseUrl |> Uri.simpleCombine (sprintf "/content/submenu.js?version=%i" cfg.ReleaseDate.Ticks)) ] []
         ]
     ]
