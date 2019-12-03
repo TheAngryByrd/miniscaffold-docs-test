@@ -230,7 +230,7 @@ var assemblies = [
   {
     "name": "miniscaffold-docs-test-core",
     "classes": [
-      { "name": "AnotherOne", "rp": "miniscaffold_docs_test_core_AnotherOne.htm", "cl": 0, "ucl": 1, "cal": 1, "tl": 6, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "AnotherOne", "rp": "miniscaffold_docs_test_core_AnotherOne.htm", "cl": 0, "ucl": 1, "cal": 1, "tl": 7, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
     ]},
 ];
 
