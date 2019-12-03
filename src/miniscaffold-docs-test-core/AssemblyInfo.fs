@@ -2,7 +2,7 @@
 namespace System
 open System.Reflection
 
-[<assembly: AssemblyTitleAttribute("miniscaffold-docs-test.Tests")>]
+[<assembly: AssemblyTitleAttribute("miniscaffold-docs-test-core")>]
 [<assembly: AssemblyProductAttribute("miniscaffold-docs-test")>]
 [<assembly: AssemblyVersionAttribute("0.1.2")>]
 [<assembly: AssemblyMetadataAttribute("ReleaseDate","2019-11-30T00:00:00.0000000")>]
@@ -13,7 +13,7 @@ open System.Reflection
 do ()
 
 module internal AssemblyVersionInformation =
-    let [<Literal>] AssemblyTitle = "miniscaffold-docs-test.Tests"
+    let [<Literal>] AssemblyTitle = "miniscaffold-docs-test-core"
     let [<Literal>] AssemblyProduct = "miniscaffold-docs-test"
     let [<Literal>] AssemblyVersion = "0.1.2"
     let [<Literal>] AssemblyMetadata_ReleaseDate = "2019-11-30T00:00:00.0000000"
