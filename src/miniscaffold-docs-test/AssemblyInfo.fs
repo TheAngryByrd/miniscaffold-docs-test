@@ -4,20 +4,20 @@ open System.Reflection
 
 [<assembly: AssemblyTitleAttribute("miniscaffold-docs-test")>]
 [<assembly: AssemblyProductAttribute("miniscaffold-docs-test")>]
-[<assembly: AssemblyVersionAttribute("0.1.1")>]
-[<assembly: AssemblyMetadataAttribute("ReleaseDate","2017-03-17T00:00:00.0000000")>]
-[<assembly: AssemblyFileVersionAttribute("0.1.1")>]
-[<assembly: AssemblyInformationalVersionAttribute("0.1.1")>]
+[<assembly: AssemblyVersionAttribute("0.1.2")>]
+[<assembly: AssemblyMetadataAttribute("ReleaseDate","2019-11-30T00:00:00.0000000")>]
+[<assembly: AssemblyFileVersionAttribute("0.1.2")>]
+[<assembly: AssemblyInformationalVersionAttribute("0.1.2")>]
 [<assembly: AssemblyMetadataAttribute("ReleaseChannel","release")>]
-[<assembly: AssemblyMetadataAttribute("GitHash","406c348125ec99bf705f44bbf047e6148e9e43b1")>]
+[<assembly: AssemblyMetadataAttribute("GitHash","695ef6676c9c71198a6862d1eccb19eb7f011afd")>]
 do ()
 
 module internal AssemblyVersionInformation =
     let [<Literal>] AssemblyTitle = "miniscaffold-docs-test"
     let [<Literal>] AssemblyProduct = "miniscaffold-docs-test"
-    let [<Literal>] AssemblyVersion = "0.1.1"
-    let [<Literal>] AssemblyMetadata_ReleaseDate = "2017-03-17T00:00:00.0000000"
-    let [<Literal>] AssemblyFileVersion = "0.1.1"
-    let [<Literal>] AssemblyInformationalVersion = "0.1.1"
+    let [<Literal>] AssemblyVersion = "0.1.2"
+    let [<Literal>] AssemblyMetadata_ReleaseDate = "2019-11-30T00:00:00.0000000"
+    let [<Literal>] AssemblyFileVersion = "0.1.2"
+    let [<Literal>] AssemblyInformationalVersion = "0.1.2"
     let [<Literal>] AssemblyMetadata_ReleaseChannel = "release"
-    let [<Literal>] AssemblyMetadata_GitHash = "406c348125ec99bf705f44bbf047e6148e9e43b1"
+    let [<Literal>] AssemblyMetadata_GitHash = "695ef6676c9c71198a6862d1eccb19eb7f011afd"

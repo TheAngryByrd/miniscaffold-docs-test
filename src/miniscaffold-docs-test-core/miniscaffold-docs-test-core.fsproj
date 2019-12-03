@@ -1,11 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
+    <OutputType>Exe</OutputType>
     <TargetFrameworks>netstandard2.1;net461</TargetFrameworks>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <RootNamespace>miniscaffold_docs_test_core</RootNamespace>
   </PropertyGroup>
+
   <PropertyGroup>
-    <Title>miniscaffold-docs-test</Title>
+    <Title>miniscaffold-docs-test-core</Title>
     <Description>miniscaffold-docs-test is an integration test project for MiniScaffold.  Don't download this.</Description>
 
   </PropertyGroup>
@@ -15,13 +17,10 @@
     
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AssemblyInfo.fs" />
-    <Compile Include="Library.fs" />
+    <Compile Include="Program.fs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\miniscaffold-docs-test-core\miniscaffold-docs-test-core.fsproj" />
-  </ItemGroup>
-  <!-- <Import Project="..\..\fsc.props" /> -->
+
   <Import Project="..\..\netfx.props" />
   <Import Project="..\..\.paket\Paket.Restore.targets" />
+
 </Project>

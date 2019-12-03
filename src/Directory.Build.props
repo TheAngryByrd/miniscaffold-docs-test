@@ -2,10 +2,11 @@
     <PropertyGroup>
         <IsPackable>true</IsPackable>
         <IsTestProject>false</IsTestProject>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <!-- Sourcelink -->
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
         <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
-  
+
     </PropertyGroup>
 </Project>
