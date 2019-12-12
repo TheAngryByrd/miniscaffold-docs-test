@@ -13,49 +13,6 @@ type ModuleByCategory = {
     Name : string
 }
 
-let tooltip (m: Member) (dataId: string) =
-    div [
-        Class "tip"
-        Id dataId
-    ] [
-        yield strong [] [
-            str "Signature:"
-        ]
-
-        yield str m.Details.Signature
-
-        yield br []
-
-        if m.Details.Modifiers |> Seq.isEmpty then
-            yield strong [] [
-                str "Modifiers:"
-            ]
-
-            yield str m.Details.FormatModifiers
-
-            yield br []
-
-        if m.Details.TypeArguments |> Seq.isEmpty then
-            yield strong [] [
-                str "Type parameters:"
-            ]
-
-            yield str m.Details.FormatTypeArguments
-
-        if m.Attributes |> Seq.isEmpty |> not then
-            yield span [] [
-                yield strong [] [
-                    str "Attributes:"
-                ]
-
-                yield br []
-
-                for attr in m.Attributes do
-                    yield str (attr.Format())
-
-                    yield br []
-            ]
-    ]
 
 let obsoleteMessage (m: Member) = seq {
     if m.IsObsolete then
@@ -94,6 +51,15 @@ let repoSourceLink (m: Member) = seq {
         ]
 }
 
+let replaceh2withh5 (content : string) =
+    content.Replace("<h2>", "<h2 class=\"h5\">")
+
+
+let normalize (content : string) =
+    content
+    |> replaceh2withh5
+
+
 
 let commentBlock (c: Comment) =
     let (|EmptyDefaultBlock|NonEmptyDefaultBlock|Section|) (KeyValue(section, content)) =
@@ -105,9 +71,9 @@ let commentBlock (c: Comment) =
     let renderSection (s : KeyValuePair<string,string>): Fable.React.ReactElement list =
         match s with
         | EmptyDefaultBlock -> []
-        | NonEmptyDefaultBlock content -> [ div [ Class "comment-block" ] [ RawText (content.Replace("h2>", "h5>"))  ] ]
+        | NonEmptyDefaultBlock content -> [ div [ Class "comment-block" ] [ RawText (normalize content)  ] ]
         | Section(name, content) -> [ h5 [] [ str name ] // h2 is obnoxiously large for this context, go with the smaller h5
-                                      RawText (content.Replace("h2>", "h5>")) ]
+                                      RawText (normalize content) ]
     c.Sections
     |> List.collect renderSection
 
@@ -163,7 +129,6 @@ let partMembers (header : string) (tableHeader : string) (members : #seq<Member>
                             ] [
                                 str (it.Details.FormatUsage(40))
                             ]
-                            tooltip it id
                         ]
                         td [
                             Class "member-name"

@@ -283,15 +283,19 @@ h1.header:visited {
   margin-bottom: 30px;
 }
 
-/* This fixes page anchors with top nav bars  */
-.page-anchor {
-    padding-top: 69px; 
-    margin-top: -69px;
+/* Fixes page anchors with bootstrap navbar */
+:target::before {
+    display: block;
+    height: 59px;
+    margin-top: -59px;
+    content: "";
 }
 
-/* .main {
-    margin: .5em 3em;
-} */
+/* Hides first br from FSharp.Literate xml-doc rendering */
+.comment-block > br:first-child,
+.xmldoc > br:first-child {
+    display: none;
+}
 
 .main h1 {
     padding: .5em 0em
