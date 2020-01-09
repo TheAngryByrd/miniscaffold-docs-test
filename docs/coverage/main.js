@@ -224,7 +224,7 @@ var assemblies = [
   {
     "name": "miniscaffold-docs-test",
     "classes": [
-      { "name": "miniscaffold_docs_test.Say", "rp": "miniscaffold_docs_test_Say.htm", "cl": 2, "ucl": 4, "cal": 6, "tl": 50, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "miniscaffold_docs_test.Say", "rp": "miniscaffold_docs_test_Say.htm", "cl": 2, "ucl": 5, "cal": 7, "tl": 52, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "System.AssemblyVersionInformation", "rp": "miniscaffold_docs_test_AssemblyVersionInformation.htm", "cl": 0, "ucl": 0, "cal": 0, "tl": 0, "ct": "MethodCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
     ]},
   {
