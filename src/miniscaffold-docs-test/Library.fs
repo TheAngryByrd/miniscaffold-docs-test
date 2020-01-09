@@ -20,6 +20,8 @@ module Say =
         DateOfBirth : DateTimeOffset
     }
 
+    let add x y = x + y
+
 
     /// <summary>Says hello to a specific person</summary>
     let helloPerson (person : Person) =
@@ -45,6 +47,6 @@ module Say =
         nothing name
 
 
-    /// Who doesn't like json?
+    /// Who doesn't like json???
     let personJToken (person : Person) =
         JToken.FromObject person
