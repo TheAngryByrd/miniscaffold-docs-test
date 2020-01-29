@@ -227,7 +227,7 @@ let dotnetRestore _ =
 let dotnetBuild ctx =
     let args =
         [
-            sprintf "/p:PackageVersion=%s" releaseNotes.NugetVersion
+            // sprintf "/p:PackageVersion=%s" releaseNotes.NugetVersion
             "--no-restore"
         ]
     DotNet.build(fun c ->
