@@ -212,7 +212,7 @@ let dotnetRestore _ =
     |> Seq.map(fun dir -> fun () ->
         let args =
             [
-                sprintf "/p:PackageVersion=%s" releaseNotes.NugetVersion
+                // sprintf "/p:PackageVersion=%s" releaseNotes.NugetVersion
             ] |> String.concat " "
         DotNet.restore(fun c ->
             { c with
